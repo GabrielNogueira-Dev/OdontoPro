@@ -9,14 +9,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { LogIn, Menu } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 const navItems = [
   { href: "#profissionais", label: "Profissionais" },
 ];
-
+    const session = null;
 const NavLinks = ({ closeMenu }: { closeMenu?: () => void }) => (
   <>
     {navItems.map((item) => (
@@ -26,14 +26,29 @@ const NavLinks = ({ closeMenu }: { closeMenu?: () => void }) => (
         onClick={closeMenu}
         className="bg-transparent hover:bg-transparent text-black shadow-none"
       >
-        <Link href={item.href}>{item.label}</Link>
+        <Link href={item.href}
+         className = "text-base font-bold">
+        {item.label}
+        </Link>
       </Button>
     ))}
+    {session ? (
+        <Link href="/dashboard"
+        className = "flex items-center justify-center cursor-pointer">
+            Painel da clínica
+        </Link>
+    ): (
+        <Button className= "cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+          <LogIn/>  Portal da clínica
+        </Button>
+    )}
   </>
+
 );
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  
 
   return (
     <header className="fixed top-0 left-0 right-0 z-999 py-4 px-6 bg-white">
