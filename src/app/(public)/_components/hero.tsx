@@ -6,7 +6,7 @@ export function Hero() {
 
     return(
         <section className = "">
-            <div className = "container mx-auto px-4 pt-20 sm:px-6 lg:px-8">
+            <div className = "container mx-auto px-4 pb-4 sm:pb-0 pt-20 sm:px-6 lg:px-8">
 
                 <main className = "flex items-center justify-center">
                     <article className = "flex-2 space-y-8 max-w-3xl flex flex-col justify-center">
