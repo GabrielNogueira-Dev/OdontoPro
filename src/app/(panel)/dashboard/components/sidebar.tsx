@@ -3,9 +3,12 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import clsx from "clsx";
-import { Sheet,SheetTrigger } from "@/components/ui/sheet";
+import { Sheet,SheetContent,SheetDescription,SheetTitle,SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { List } from "lucide-react";
+import { Banknote, CalendarCheck2, ChevronLeft, ChevronLeftIcon, ChevronRight, Folder, List, Settings } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import ImgLogo from "../../../../../public/logo-odonto.png"
 
 export function SidebarDashboard({children}: {children:React.ReactNode}){
 
@@ -14,13 +17,35 @@ export function SidebarDashboard({children}: {children:React.ReactNode}){
 
     return(
         <div className="flex min-h-screen w-full">
+            {/*Desktop*/}
+        <aside
+        className = {clsx("flex flex-col border-r bg-background transition-all duration-300 p-4 h-full",{
+            "w-20": isColapsed,
+            "w-64": !isColapsed,
+            "hidden md:flex md:fixed": true,
+        })}
+        >
+
+        <div className = "mb-6 mt-4">
+            <Image src={ImgLogo} alt="logo do site" priority quality={100}
+            style={{ width: "auto",height: "auto" }}
+            />                    
+        </div>
+
+        <Button className= "bg-gray-100 hover:bg-gray-50 text-zinc-900 self-end mb-2"
+        onClick={() => setIsColapsed(!isColapsed)}
+        >
+            {isColapsed ? <ChevronRight className="w-4 h-4"/> : <ChevronLeft/>}
+        </Button>
+
+        </aside>
 
             <div className= {clsx("flex flex-1 flex-col transiction-all duration-300",{
                 "md:ml-20": isColapsed,
                 "md:ml-64": !isColapsed
             })}>
-
-                <header className="md:hidden">
+                        {/*mobile*/}
+                <header className="stick top-0 bg-white md:hidden flex items-center justify-between border-b px-2 md:px-6 h-14 z-10 ">
                     <Sheet>
                         <div className="flex items-center gap-4">
                             <SheetTrigger asChild>
@@ -33,7 +58,51 @@ export function SidebarDashboard({children}: {children:React.ReactNode}){
                                 Menu OdontoPro
                             </h1>
                         </div>
+
+                    <SheetContent side="right" className="sm:max-w-xs text-black">
+                      <SheetTitle>OdontoPro</SheetTitle>
+                        <SheetDescription>
+                            Menu admninistrativo 
+                        </SheetDescription>
+
+                            <nav className= "grid gap-2 text-base pt-5">
+                                <SidebarLink
+                                href="/dashboard"
+                                label="Agendamentos"
+                                pathname={pathName}
+                                isCollapsed={isColapsed}
+                                icon={<CalendarCheck2 className="W-6 h-6"/>}
+                                />
+
+                                  <SidebarLink
+                                href="/dashboard/service"
+                                label="Servicos"
+                                pathname={pathName}
+                                isCollapsed={isColapsed}
+                                icon={<Folder className="W-6 h-6"/>}
+                                />
+
+                                <SidebarLink
+                                href="/dashboard/plans"
+                                label="Planos"
+                                pathname={pathName}
+                                isCollapsed={isColapsed}
+                                icon={<Banknote className="W-6 h-6"/>}
+                                />
+                                <SidebarLink 
+                                    href="/dashboard/profile"
+                                    label="Meu Perfil"
+                                    pathname={pathName}
+                                    isCollapsed={isColapsed}
+                                    icon={<Settings className="W-6 h-6"/>}
+                                    />
+
+                            </nav>
+
+                    </SheetContent>
+
                     </Sheet>
+
                 </header>
 
                 <main className="flex-1 py-4 px-2 md:p-6">
@@ -45,3 +114,25 @@ export function SidebarDashboard({children}: {children:React.ReactNode}){
         </div>
     )
 } 
+
+interface SidebarLinkProps{
+    href: string;
+    icon: React.ReactNode;
+    isCollapsed: boolean;
+    label: string;
+    pathname: string;
+}
+
+function SidebarLink({ href, icon, isCollapsed, label, pathname }: SidebarLinkProps) {
+    return(
+        <Link href={href}>
+          <div className= {clsx("flex items-center  gap-2 px-3 py-2 rounded-md transition-colors",{
+            "text-white bg-blue-500": pathname === href,
+            "text-gray-700 bg-gray-50 hover:bg-gray-200": pathname !== href
+          })} >
+            <span className="w-6 h-6">{icon}</span>
+            {!isCollapsed && <span>{label}</span>} 
+          </div> 
+        </Link>
+    )
+}
