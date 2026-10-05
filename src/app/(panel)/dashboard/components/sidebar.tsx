@@ -5,10 +5,11 @@ import { usePathname } from "next/navigation"
 import clsx from "clsx";
 import { Sheet,SheetContent,SheetDescription,SheetTitle,SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Banknote, CalendarCheck2, ChevronLeft, ChevronLeftIcon, ChevronRight, Folder, List, Settings } from "lucide-react";
+import { Banknote, CalendarCheck2, ChevronLeft, ChevronRight, Folder, List, Settings } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import ImgLogo from "../../../../../public/logo-odonto.png"
+import { Collapsible,CollapsibleContent } from "@radix-ui/react-collapsible";
 
 export function SidebarDashboard({children}: {children:React.ReactNode}){
 
@@ -35,8 +36,94 @@ export function SidebarDashboard({children}: {children:React.ReactNode}){
         <Button className= "bg-gray-100 hover:bg-gray-50 text-zinc-900 self-end mb-2"
         onClick={() => setIsColapsed(!isColapsed)}
         >
-            {isColapsed ? <ChevronRight className="w-4 h-4"/> : <ChevronLeft/>}
+            {!isColapsed ? <ChevronLeft className="w-4 h-4"/> : <ChevronRight/>}
         </Button>
+
+        {/*Mostrar apenas quando a sidebar esta recolhida*/}
+        
+        {isColapsed && (
+            <nav className='flex flex-col gap-1 overflow-hidden mt-2'>
+
+                <SidebarLink
+                   href="/dashboard"
+                   label="Agendamentos"
+                   pathname={pathName}
+                   isCollapsed={isColapsed}
+                   icon={<CalendarCheck2 className='w-6 h-6' />}
+                 />
+                 <SidebarLink
+                   href="/dashboard/service"
+                   label="Serviços"
+                   pathname={pathName}
+                   isCollapsed={isColapsed}
+                   icon={<Folder className='w-6 h-6' />}
+                 />
+   
+                 <SidebarLink
+                   href="/dashboard/profile"
+                   label="Meu perfil"
+                   pathname={pathName}
+                   isCollapsed={isColapsed}
+                   icon={<Settings className='w-6 h-6' />}
+                 />
+   
+                 <SidebarLink
+                   href="/dashboard/plans"
+                   label="Planos"
+                   pathname={pathName}
+                   isCollapsed={isColapsed}
+                   icon={<Banknote className='w-6 h-6' />}
+                 />
+
+            </nav>
+        )}
+
+        <Collapsible open={!isColapsed}>
+            <CollapsibleContent>
+            <nav className='flex flex-col gap-1 overflow-hidden'>
+              <span className='text-sm text-gray-400 font-medium mt-1 uppercase'>
+                Painel
+              </span>
+
+              <SidebarLink
+                href="/dashboard"
+                label="Agendamentos"
+                pathname={pathName}
+                isCollapsed={isColapsed}
+                icon={<CalendarCheck2 className='w-6 h-6' />}
+              />
+              <SidebarLink
+                href="/dashboard/service"
+                label="Serviços"
+                pathname={pathName}
+                isCollapsed={isColapsed}
+                icon={<Folder className='w-6 h-6' />}
+              />
+
+              <span className='text-sm text-gray-400 font-medium mt-1 uppercase'>
+                Configurações
+              </span>
+
+              <SidebarLink
+                href="/dashboard/profile"
+                label="Meu perfil"
+                pathname={pathName}
+                isCollapsed={isColapsed}
+                icon={<Settings className='w-6 h-6' />}
+              />
+
+              <SidebarLink
+                href="/dashboard/plans"
+                label="Planos"
+                pathname={pathName}
+                isCollapsed={isColapsed}
+                icon={<Banknote className='w-6 h-6' />}
+              />
+
+
+            </nav>
+          </CollapsibleContent>
+        </Collapsible>
 
         </aside>
 
@@ -59,43 +146,43 @@ export function SidebarDashboard({children}: {children:React.ReactNode}){
                             </h1>
                         </div>
 
-                    <SheetContent side="right" className="sm:max-w-xs text-black">
-                      <SheetTitle>OdontoPro</SheetTitle>
-                        <SheetDescription>
+                <SheetContent side="right" className="sm:max-w-xs text-black">
+                    <SheetTitle>OdontoPro</SheetTitle>
+                    <SheetDescription>
                             Menu admninistrativo 
-                        </SheetDescription>
+                    </SheetDescription>
 
-                            <nav className= "grid gap-2 text-base pt-5">
-                                <SidebarLink
-                                href="/dashboard"
-                                label="Agendamentos"
-                                pathname={pathName}
-                                isCollapsed={isColapsed}
-                                icon={<CalendarCheck2 className="W-6 h-6"/>}
-                                />
+                        <nav className= "grid gap-2 text-base pt-5">
+                            <SidebarLink
+                            href="/dashboard"
+                            label="Agendamentos"
+                            pathname={pathName}
+                            isCollapsed={isColapsed}
+                            icon={<CalendarCheck2 className="W-6 h-6"/>}
+                            />
 
-                                  <SidebarLink
-                                href="/dashboard/service"
-                                label="Servicos"
-                                pathname={pathName}
-                                isCollapsed={isColapsed}
-                                icon={<Folder className="W-6 h-6"/>}
-                                />
+                            <SidebarLink
+                            href="/dashboard/service"
+                            label="Servicos"
+                            pathname={pathName}
+                            isCollapsed={isColapsed}
+                            icon={<Folder className="W-6 h-6"/>}
+                            />
 
-                                <SidebarLink
-                                href="/dashboard/plans"
-                                label="Planos"
-                                pathname={pathName}
-                                isCollapsed={isColapsed}
-                                icon={<Banknote className="W-6 h-6"/>}
-                                />
-                                <SidebarLink 
-                                    href="/dashboard/profile"
-                                    label="Meu Perfil"
-                                    pathname={pathName}
-                                    isCollapsed={isColapsed}
-                                    icon={<Settings className="W-6 h-6"/>}
-                                    />
+                            <SidebarLink
+                             href="/dashboard/plans"
+                            label="Planos"
+                            pathname={pathName}
+                            isCollapsed={isColapsed}
+                            icon={<Banknote className="W-6 h-6"/>}
+                            />
+                            <SidebarLink 
+                            href="/dashboard/profile"
+                            label="Meu Perfil"
+                            pathname={pathName}
+                            isCollapsed={isColapsed}
+                            icon={<Settings className="W-6 h-6"/>}
+                            />
 
                             </nav>
 
