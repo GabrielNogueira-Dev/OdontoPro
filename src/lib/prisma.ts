@@ -2,7 +2,17 @@ import "dotenv/config"
 import {PrismaClient} from "../generated/prisma/client"
 import {PrismaPg} from "@prisma/adapter-pg"
 
-const connectionString = `${process.env.DATABASE_URL}`
+const connectionUrl = new URL(`${process.env.DATABASE_URL}`)
+const sslMode = connectionUrl.searchParams.get("sslmode")
+
+if (
+    connectionUrl.searchParams.get("uselibpqcompat") !== "true" &&
+    (sslMode === "prefer" || sslMode === "require" || sslMode === "verify-ca")
+) {
+    connectionUrl.searchParams.set("sslmode", "verify-full")
+}
+
+const connectionString = connectionUrl.toString()
 
 let prisma: PrismaClient;
 const adapter = new PrismaPg({ connectionString })

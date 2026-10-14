@@ -1,5 +1,22 @@
-import { ProfileContent } from "../../profile/components/profile"
+import getSesion from '@/lib/getSession'
+import { redirect } from 'next/navigation'
+import { getUserData } from './_DATA_ACCESS/get-info-user'
+import { ProfileContent } from "./_components/profile"
 
-export default function DashboardProfilePage() {
-  return <ProfileContent />
+export default async function Profile() {
+  const session = await getSesion()
+
+  if (!session) {
+    redirect("/")
+  }
+
+  const user = await getUserData({ userId: session.user?.id })
+
+  if (!user) {
+    redirect("/")
+  }
+
+  return (
+    <ProfileContent user={user} />
+  )
 }
