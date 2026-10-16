@@ -56,7 +56,7 @@ export function ProfileContent( {user} :ProfileContenProps) {
     const hours: string[] = []
 
     for (let i = 8; i <= 18; i ++){
-        for (let j = 0; j < 2; j ++){
+        for (let j = 0; j < 2; j ++){ 
             const hour = i.toString().padStart(2,"0")
             const minute = (j * 30).toString().padStart(2,"0")
             hours.push(`${hour}:${minute}`)
