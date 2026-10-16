@@ -8,8 +8,8 @@ export function formatPhone(value: string){
     }
         // Aplica a mascara p/ (65) 91234-5678
     const formatedValue = cleanedValue
-    .replace(/^(\d{2})(\d)/g, '($1) $2')
-    .replace(/(\d{4,5})(\d{4})$/, '$1-$2') 
+    .replace(/^(\d{2})(\d)/g, '($1) $2') // (00) 9895262262626
+    .replace(/(\d{4,5})(\d{4})$/, '$1-$2')  // (00) 01234-1234
 
     return formatedValue
 

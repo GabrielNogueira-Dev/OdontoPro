@@ -61,7 +61,7 @@ export function ProfileContent( {user} :ProfileContenProps) {
             const minute = (j * 30).toString().padStart(2,"0")
             hours.push(`${hour}:${minute}`)
         }
-    }
+    } 
     return hours
   }
   const hours = generateTimeSlotes()
@@ -84,7 +84,7 @@ function togglerHour(hour:string){
 
     async function onSubmit(values: ProfileFormData){
       
-          const excluirIconesNumber = extractPhoneNumber( values.phone || "")
+         // const extractValue = extractPhoneNumber( values.phone || "") pega numero sem sinais () e -
 
        const response = await updateProfile({
         name: values.name,
