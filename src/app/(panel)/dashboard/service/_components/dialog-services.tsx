@@ -144,8 +144,8 @@ value = value.replace(/\D/g, "");
                   )}      
                     />
                 </div>
-                    <Button className="w-full font-semibold text-white "
-                    type="submit" disabled={loading}
+                    <Button className="w-full font-semibold text-white cursor-pointer"
+                    type="submit" disabled={loading} 
                     >{loading ? `Cadastrando..` : "Adicionar serviço"}
                     </Button>
 
