@@ -5,13 +5,51 @@ import { DialogServiceFormData, useDialogServiceForm } from "./dialog-form-servi
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { convertRealToCents } from "@/utils/convert-currency"
+import { createNewService } from "../_actions/create-service"
+import { toast } from "sonner"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
-export function DialogService(){
+interface DialogServiceProps{
+    closeModal: () => void; }
+
+export function DialogService({ closeModal }: DialogServiceProps ){
 
     const form = useDialogServiceForm()
-    
+    const [loading,setLoading] = useState(false)
+    const router = useRouter();
+
 async function onSubmit(values: DialogServiceFormData){
-console.log(values)
+    setLoading(true)
+    const priceInCents = convertRealToCents(values.price)
+    const hours = Number(values.hours || 0)
+    const minutes = Number(values.minutes || 0)
+
+    //Agora vou converter as horas e minutos pp duration (totalizo e somo)
+    const duration = (hours * 60) + minutes;
+
+    const response = await createNewService({
+        name: values.name,
+        price: priceInCents,
+        duration: duration,
+    });
+
+    setLoading(false)
+   
+    if(response.error){
+        toast.error(response.error)
+        return;
+    }
+        router.refresh();
+
+    toast.success("Serviço cadastrado com sucesso!")
+    handleCloseModal();
+}
+
+function handleCloseModal(){
+    form.reset();
+    closeModal()
 }
 
 function changeCurrency(event: React.ChangeEvent<HTMLInputElement>){
@@ -19,7 +57,7 @@ let {value} = event.target
 value = value.replace(/\D/g, "");
 
     if(value){
-        value = (parseInt(value,30) / 100).toFixed(2);
+        value = (parseInt(value,10) / 100).toFixed(2);
         value = value.replace(".",","); // separa 1234,56 -> 1.234,00
         value = value.replace(/\B(?=(\d{3})+(?!\d))/g,'.')
     }
@@ -107,7 +145,9 @@ value = value.replace(/\D/g, "");
                     />
                 </div>
                     <Button className="w-full font-semibold text-white "
-                    type="submit">Adicionar Serviço</Button>
+                    type="submit" disabled={loading}
+                    >{loading ? `Cadastrando..` : "Adicionar serviço"}
+                    </Button>
 
             </form>
         </Form>

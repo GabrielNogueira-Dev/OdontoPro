@@ -2,21 +2,25 @@
 
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,DialogClose,
-  DialogContent,DialogDescription,
-  DialogFooter,DialogHeader,
-  DialogTitle,DialogTrigger} from "@/components/ui/dialog"
+  Dialog,DialogContent,DialogTrigger} from "@/components/ui/dialog"
 
   import {
-    Card, CardContent, CardDescription,
-    CardFooter, CardHeader, CardTitle
+    Card, CardContent, CardHeader, CardTitle
   } from "@/components/ui/card"
 
 import { useState } from "react"
-import { Plus } from "lucide-react"
+import { Pencil, Plus, X } from "lucide-react"
 import { DialogService } from "./dialog-services"
+import { Service } from "@/generated/prisma/client"
+import { formatCurrency } from "@/utils/formatCurrency"
 
-export function ServicesList(){
+interface ServiceListProps{
+  services: Service[];
+}
+
+export function ServicesList( { services }: ServiceListProps){
+
+  console.log(services)
 
     const [isDialogOpen,setIsDialogOpen] = useState(false);
     
@@ -35,10 +39,53 @@ export function ServicesList(){
                     </DialogTrigger>
 
                         <DialogContent>
-                          <DialogService/>
+                          <DialogService
+                          closeModal= { ()=> {
+                            setIsDialogOpen(false)
+                          } }
+                          />
                         </DialogContent>
 
                 </CardHeader>
+
+                    <CardContent>
+                      <section className="space-y-4 mt-5">
+                          {services.map( services => (
+                            <article key={services.id}
+                            className="flex items-center justify-between"
+                            >
+
+                              <div className="flex items-center space-x-2">
+                                <span className="font-semibold">{services.name}</span>
+                                
+                                  <span className="text-gray-500">-</span>
+
+                                <span className="font-medium text-gray-400">
+                                  {formatCurrency((services.price / 100))}
+                                </span>
+                              </div>
+
+                                <div>
+                                  <Button variant="ghost"
+                                  size="icon"
+                                  onClick={()=> {}}
+                                  >
+                                      <Pencil className="w-4 h-4"/>
+                                  </Button>
+
+                                   <Button variant="ghost"
+                                  size="icon"
+                                  onClick={()=> {}}
+                                  >
+                                      <X className="w-4 h-4"/>
+                                  </Button>
+                                </div>
+
+                            </article>
+                          ))}
+                      </section>
+                    </CardContent>
+
             </Card>
 
         </section>

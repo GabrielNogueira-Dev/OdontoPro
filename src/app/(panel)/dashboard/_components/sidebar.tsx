@@ -22,7 +22,7 @@ export function SidebarDashboard({children}: {children:React.ReactNode}){
         <aside
         className = {clsx("flex flex-col border-r bg-background transition-all duration-300 p-4 h-full",{
             "w-20": isColapsed,
-            "w-64": !isColapsed,
+            "w-64": !isColapsed, 
             "hidden md:flex md:fixed": true,
         })}
         >

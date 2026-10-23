@@ -20,6 +20,6 @@ export async function getAllServices({ userId }: {userId:string}){
 
         return { data: services }
     }catch(err){
-        return { error: "Falha ao buscar serviços"}
+        return { error: "Falha ao buscar serviços", err}
     }
 }
