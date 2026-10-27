@@ -56,10 +56,17 @@ export function ServicesList( { services }: ServiceListProps){
                         </Button>
                     </DialogTrigger>
 
-                        <DialogContent>
+                        <DialogContent
+                          onInteractOutside={(e)=> {
+                            e.preventDefault();
+                            setIsDialogOpen(false);
+                            setEditingService(null);
+                          }}
+                        >
                           <DialogService
                            closeModal= { ()=> {
-                            setIsDialogOpen(false)
+                            setIsDialogOpen(false);
+                            setEditingService(null);
                           } }
                           serviceId= {editingService ? editingService.id : undefined}
                           initialValues= {editingService ? {

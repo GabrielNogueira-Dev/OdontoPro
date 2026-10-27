@@ -10,6 +10,7 @@ import { createNewService } from "../_actions/create-service"
 import { toast } from "sonner"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { updateService } from "../_actions/update-service"
 
 export interface DialogServiceProps{
     closeModal: () => void; 
@@ -37,6 +38,16 @@ async function onSubmit(values: DialogServiceFormData){
     //Agora vou converter as horas e minutos pp duration (totalizo e somo)
     const duration = (hours * 60) + minutes;
 
+        if(serviceId){
+            await editeServiceById({
+                serviceId: serviceId,
+                name: values.name,
+                priceInCents: priceInCents,
+                duration: duration
+            })
+            return;
+        }
+
     const response = await createNewService({
         name: values.name,
         price: priceInCents,
@@ -53,6 +64,31 @@ async function onSubmit(values: DialogServiceFormData){
 
     toast.success("Serviço cadastrado com sucesso!")
     handleCloseModal();
+}
+
+async function editeServiceById({serviceId,name,priceInCents,duration}: {
+    serviceId:string; name: string;
+    priceInCents:number; duration: number;
+}){
+//Atualizo o servico abaixo
+
+    const response = await updateService({
+       serviceId: serviceId,
+        name: name,
+        price: priceInCents,
+        duration: duration
+    })
+
+    setLoading(false)
+    
+        if(response.error){
+            toast(response.error)
+            return;
+        }
+
+        toast(response.data);
+        handleCloseModal();
+
 }
 
 function handleCloseModal(){
@@ -154,7 +190,7 @@ value = value.replace(/\D/g, "");
                 </div>
                     <Button className="w-full font-semibold text-white cursor-pointer"
                     type="submit" disabled={loading} 
-                    >{loading ? `Cadastrando..` : "Adicionar serviço"}
+                    >{loading ? `Carregando..` : `${serviceId ? "Atualizar serviço" : "Cadastrar serviço"}`}
                     </Button>
 
             </form>
