@@ -22,9 +22,8 @@ interface ServiceListProps{
 
 export function ServicesList( { services }: ServiceListProps){
 
-  console.log(services)
-
     const [isDialogOpen,setIsDialogOpen] = useState(false);
+    const [editingService,setEditingService] = useState< null | Service >(null)
 
    async function handleDeleteService(serviceId: string){
 
@@ -38,11 +37,17 @@ export function ServicesList( { services }: ServiceListProps){
 
     }
 
+    function handleEditService(service: Service){
+      setEditingService(service);
+      setIsDialogOpen(true);
+    }
+
     return(
        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
          <section className="mx-aut ">
             
             <Card>
+
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-xl md:text-2xl font-bold">Serviços</CardTitle>
                     <DialogTrigger asChild >
@@ -53,9 +58,16 @@ export function ServicesList( { services }: ServiceListProps){
 
                         <DialogContent>
                           <DialogService
-                          closeModal= { ()=> {
+                           closeModal= { ()=> {
                             setIsDialogOpen(false)
                           } }
+                          serviceId= {editingService ? editingService.id : undefined}
+                          initialValues= {editingService ? {
+                            name: editingService.name,
+                            price: (editingService.price / 100).toFixed(2).replace(".",","),
+                            hours: Math.floor( editingService.duration / 60).toString(),
+                            minutes: (editingService.duration % 60).toString()
+                          }: undefined }
                           />
                         </DialogContent>
 
@@ -81,14 +93,14 @@ export function ServicesList( { services }: ServiceListProps){
                                 <div>
                                   <Button variant="ghost" className="cursor-pointer"
                                   size="icon"
-                                  onClick={()=> {}}
+                                  onClick={()=> handleEditService(services)}
                                   >
                                       <Pencil className="w-4 h-4"/>
                                   </Button>
 
                                    <Button variant="ghost" className="cursor-pointer"
                                   size="icon"
-                                  onClick={()=> {handleDeleteService(services.id)}}
+                                  onClick={()=> handleDeleteService(services.id)}
                                   >
                                       <X className="w-4 h-4"/>
                                   </Button>

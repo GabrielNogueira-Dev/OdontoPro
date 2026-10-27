@@ -11,12 +11,20 @@ import { toast } from "sonner"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
-interface DialogServiceProps{
-    closeModal: () => void; }
+export interface DialogServiceProps{
+    closeModal: () => void; 
+    serviceId?: string ;
+    initialValues?: {
+        name:string;
+        price:string;
+        hours:string;
+        minutes:string;
+    }
+}
 
-export function DialogService({ closeModal }: DialogServiceProps ){
+export function DialogService({ closeModal, initialValues,serviceId }: DialogServiceProps ){
 
-    const form = useDialogServiceForm()
+    const form = useDialogServiceForm({ initialValues: initialValues })
     const [loading,setLoading] = useState(false)
     const router = useRouter();
 

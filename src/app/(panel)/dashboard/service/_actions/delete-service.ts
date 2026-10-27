@@ -3,7 +3,6 @@
 import {auth} from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
-import { toast } from "sonner"
 import z from "zod"
 
 const formSchema = z.object({
