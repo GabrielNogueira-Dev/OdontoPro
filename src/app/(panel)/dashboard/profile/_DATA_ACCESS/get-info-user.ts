@@ -24,7 +24,6 @@ try{
     if(!getUser){
         return null;
     }
-
 return getUser
 }catch(err){
     console.log(err)

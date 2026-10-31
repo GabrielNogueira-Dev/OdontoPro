@@ -26,8 +26,10 @@ import { useState } from "react"
 import { cn } from "cn"
 import { Prisma } from "@/generated/prisma/client"
 import { updateProfile } from "../_actions/update-profile"
-import { extractPhoneNumber, formatPhone } from "@/utils/formatPhone"
+import { formatPhone } from "@/utils/formatPhone"
 import {toast} from "sonner"
+import { signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 type UserWithSubscription = Prisma.UserGetPayload<{
   include: {
@@ -41,8 +43,10 @@ interface ProfileContenProps{
 
 export function ProfileContent( {user} :ProfileContenProps) {
 
+    const router = useRouter()
     const [dialogIsOpen,setDialogIsOpen] = useState(false)
     const [selectedHours,setSelectedHours] = useState<string[]>(() => user.times ?? [])
+    const {update} = useSession();
 
   const form = useProfileForm({
     name: user.name,
@@ -99,6 +103,12 @@ if(response.error){
   toast.error(response.error)
 }
 
+    }
+
+    async function handleLogOut(){
+      await signOut();
+      await update();
+      router.replace("/")
     }
 
   return (
@@ -303,6 +313,13 @@ if(response.error){
           </Card>
         </form>
       </Form>
+
+      <section className="mt-4">
+        <Button 
+        variant="destructive"
+        onClick={handleLogOut}
+        >Sair da conta</Button>
+      </section>
     </div>
   )
 }
