@@ -15,7 +15,11 @@ const user = await prisma.user.findFirst({
     },
     include: {
         subscription:true,
-        services: true,
+      services: {
+        where: {
+            status: true
+        }
+      }
     }
 })
 if(!user){

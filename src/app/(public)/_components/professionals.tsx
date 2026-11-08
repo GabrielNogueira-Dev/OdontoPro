@@ -1,10 +1,11 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import fotoImg from "../../../../public/foto1.png"
 import Link from "next/link";
 
 export function Professionals() {
-
+  
     return(
         <section className = "bg-gray-50 py-16">
            

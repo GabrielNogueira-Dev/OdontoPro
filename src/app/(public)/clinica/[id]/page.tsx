@@ -1,5 +1,5 @@
 import { getInfoSchedule } from "./_data-access/get-info-schadule"
-
+import { ScheduleContent } from "@/app/(public)/clinica/[id]/_components/schedule-content"   
 
 export default async function SchedulePage({
     params,
@@ -11,6 +11,6 @@ export default async function SchedulePage({
     const user = await getInfoSchedule({userId:userId})
 
     return(
-        <h1>{user?.id}</h1>
+        <ScheduleContent user={user}/>
     )
 }
