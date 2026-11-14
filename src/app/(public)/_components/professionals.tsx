@@ -40,7 +40,7 @@ export function Professionals() {
                         <div className = "w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
                     </div>
 
-                    <Link href = "/clinica/123"
+                    <Link href = "/clinica/1"
                      className = " w-full bg-emerald-500 hover:bg-emerald-400 text-white flex items-center justify-center py-2 rounded-b-md text-sm md:text-base font-medium" 
                      >Acessar Clínica
                     </Link>

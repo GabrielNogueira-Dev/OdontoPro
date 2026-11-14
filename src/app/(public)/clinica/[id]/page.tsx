@@ -1,5 +1,6 @@
 import { getInfoSchedule } from "./_data-access/get-info-schadule"
-import { ScheduleContent } from "@/app/(public)/clinica/[id]/_components/schedule-content"   
+import { ScheduleContent } from "@/app/(public)/clinica/[id]/_components/schedule-content"
+import { notFound } from "next/navigation"
 
 export default async function SchedulePage({
     params,
@@ -10,7 +11,11 @@ export default async function SchedulePage({
     const userId = (await params).id
     const user = await getInfoSchedule({userId:userId})
 
+    if (!user) {
+        notFound()
+    }
+
     return(
-        <ScheduleContent user={user}/>
+        <ScheduleContent clinic={user}/>
     )
 }
